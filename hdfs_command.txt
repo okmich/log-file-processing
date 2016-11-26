@@ -1,0 +1,19 @@
+wget http://ita.ee.lbl.gov/traces/NASA_access_log_Jul95.gz
+wget http://ita.ee.lbl.gov/traces/NASA_access_log_Aug95.gz
+
+## uncompress the files
+gunzip NASA_access_log_Jul95.gz
+gunzip NASA_access_log_Aug95.gz
+
+## create a hdfs folder
+hdfs dfs -mkdir -p /user/cloudera/output/logs/nasa
+
+## prepare folders for the flume client agents
+mkdir -p /home/cloudera/sample-data/nasa_log/july
+mkdir -p /home/cloudera/sample-data/nasa_log/august
+mkdir -p /home/cloudera/sample-data/nasa_log/file-channel/checkpointDir
+mkdir -p /home/cloudera/sample-data/nasa_log/file-channel/dataDir
+
+mv NASA_access_log_Jul95 /home/cloudera/sample-data/nasa_log/july
+mv NASA_access_log_Aug95 /home/cloudera/sample-data/nasa_log/august
+

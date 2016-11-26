@@ -1,0 +1,8 @@
+# second level agent in fan-in architecture.
+# this should be started first to create the avro server endpoint
+flume-ng agent --name server --conf-file server_agent.properties
+
+# flume agent for the first client
+flume-ng agent --name julyLog --conf-file clienta.properties
+# flume agent run for the second flume client
+flume-ng agent --name augLog --conf-file clientb.properties
