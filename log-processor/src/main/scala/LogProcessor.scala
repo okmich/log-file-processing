@@ -11,7 +11,10 @@ import org.apache.spark.sql.types._
 
 import scala.util.matching.Regex
 
-case class Log (host: String, clientAuthId: String, userId: String, ts: String, tz: String, method: String, resource: String, protocol:String, responsecode:String, bytes:String)
+import java.text.SimpleDateFormat
+import java.util.Calendar
+
+case class Log (host: String, clientAuthId: String, userId: String, method: String, resource: String, protocol:String, responsecode:String, bytes:String, tz: String, ts: String, year: Short, month: Short, day: Short, hour: Short, minute: Short, sec: Short, dayOfWeek: Short)
 
 object LogProcessor  {
 
@@ -31,10 +34,29 @@ object LogProcessor  {
 
 		val logInputRdd = sc.textFile(inputPath)
 		val LGREGEXP = "(.+?)\\s(.+?)\\s(.+?)\\s\\[(.+?)\\s(.+?)\\]\\s\"(.+?)\\s(.+?)\\s(.+?)\"\\s(.+?)\\s(.+?)".r
-		val logRDD = logInputRdd.map(_ match {
-			case LGREGEXP(host, clientAuthId, userId, ts, tz, method, resource, protocol, responsecode, bytes) => Log(host, clientAuthId, userId, ts, tz, method, resource, protocol, responsecode, bytes)
-			case _ => Log("", "", "", "", "", "", "", "", "", "")
-		}).filter (_.host != "")
+
+		val logRDD = logInputRdd.mapPartitions(iters => {
+			val cal  = Calendar.getInstance
+			val sdf = new SimpleDateFormat("dd/MMM/yyyy:hh:mm:ss")
+
+			val ZERO = (0).toShort
+			
+			iters.map (_ match {
+				case LGREGEXP(host, clientAuthId, userId, ts, tz, method, resource, protocol, responsecode, bytes) => {
+						cal.setTime(sdf.parse(ts))
+						val year = cal.get(Calendar.YEAR).toShort
+						val month = cal.get(Calendar.MONTH).toShort
+						val day= cal.get(Calendar.DAY_OF_MONTH).toShort
+						val hour = cal.get(Calendar.HOUR).toShort
+						val min = cal.get(Calendar.MINUTE).toShort
+						val sec = cal.get(Calendar.SECOND).toShort
+						val dayOfWeek = cal.get(Calendar.DAY_OF_WEEK).toShort
+						
+						Log(host, clientAuthId, userId, method, resource, protocol, responsecode, bytes, tz, ts, year, month, day, hour, min, sec, dayOfWeek)
+					}
+				case _ => Log("", "", "", "", "", "", "", "", "", "", ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO)
+			}).filter (_.host != "")
+		})
 
 		val sqlContext = new SQLContext(sc)
 
@@ -44,16 +66,23 @@ object LogProcessor  {
 					StructField("host", StringType, false) ::
 					StructField("clientAuthId", StringType, false) ::
 					StructField("userId", StringType, false) ::
-					StructField("ts", StringType, false) ::
-					StructField("tz", StringType, false) ::
 					StructField("method", StringType, false) ::
 					StructField("resource", StringType, false) ::
 					StructField("protocol", StringType, false) ::
 					StructField("responsecode", StringType, false) ::
-					StructField("bytes", StringType, false) :: Nil
+					StructField("bytes", StringType, false) ::
+					StructField("tz", StringType, false) :: 
+					StructField("ts", StringType, false) :: 
+					StructField("ts_year", ShortType, false) :: 
+					StructField("ts_month", ShortType, false) :: 
+					StructField("ts_day", ShortType, false) :: 
+					StructField("ts_hour", ShortType, false) :: 
+					StructField("ts_minute", ShortType, false) :: 
+					StructField("ts_sec", ShortType, false) :: 
+					StructField("ts_dayOfWeek", ShortType, false) ::  Nil
 				)
 		val logRowRDD = logRDD map (f => {
-				Row(f.host, f.clientAuthId, f.userId, f.ts, f.tz, f.method, f.resource, f.protocol, f.responsecode, f.bytes)
+				Row(f.host, f.clientAuthId, f.userId, f.method, f.resource, f.protocol, f.responsecode, f.bytes, f.tz, f.ts, f.year, f.month, f.day, f.hour, f.minute, f.sec, f.dayOfWeek)
 			})
 		//create the log dataframe
 		val logDF = sqlContext.createDataFrame(logRowRDD, schema)
