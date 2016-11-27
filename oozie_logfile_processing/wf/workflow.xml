@@ -5,10 +5,10 @@
         <spark xmlns="uri:oozie:spark-action:0.1">
             <job-tracker>${jobTracker}</job-tracker>
             <name-node>${namenode}</name-node>
-            <master>local[*]</master>
+            <master>yarn-cluster</master>
             <mode>client</mode>
             <name>NasaLogProcessor</name>
-            <class>Log Processor</class>
+            <class>LogProcessor</class>
             <jar>/lib/logfile-data-processor_2.11-1.0.jar</jar>
             <arg>${inputPath}</arg>
             <arg>${outputPath}</arg>

@@ -35,6 +35,8 @@ object LogProcessor  {
 		val logInputRdd = sc.textFile(inputPath)
 		val LGREGEXP = "(.+?)\\s(.+?)\\s(.+?)\\s\\[(.+?)\\s(.+?)\\]\\s\"(.+?)\\s(.+?)\\s(.+?)\"\\s(.+?)\\s(.+?)".r
 
+		val badRecords = sc.accumulator(0, "Bad Log Line Count")
+
 		val logRDD = logInputRdd.mapPartitions(iters => {
 			val cal  = Calendar.getInstance
 			val sdf = new SimpleDateFormat("dd/MMM/yyyy:hh:mm:ss")
@@ -54,8 +56,13 @@ object LogProcessor  {
 						
 						Log(host, clientAuthId, userId, method, resource, protocol, responsecode, bytes, tz, ts, year, month, day, hour, min, sec, dayOfWeek)
 					}
-				case _ => Log("", "", "", "", "", "", "", "", "", "", ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO)
-			}).filter (_.host != "")
+				case _ => Log("", "", "", "", "", "", "", "", "", "", ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO) //bad records
+			}).filter (l => {
+				//put an accumulator
+				badRecords += 1
+				
+				_.host != ""
+			}) //removing bad records
 		})
 
 		val sqlContext = new SQLContext(sc)
