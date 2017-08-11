@@ -1,0 +1,27 @@
+<coordinator-app name="logfile-process-coordinator" frequency="${coord:days(1)}"
+                 start="2016-01-02T09:00Z" end="2020-01-02T09:00Z" timezone="America/Los_Angeles"
+                 xmlns="uri:oozie:coordinator:0.1">
+	<action>
+	  <workflow>
+	    <app-path>${namenode}/user/cloudera/oozie/logfile-process/wf</app-path>
+	    <configuration>
+	      <property>
+	        <name>jobTracker</name>
+	        <value>${jobTracker}</value>
+	      </property>
+	      <property>
+	        <name>namenode</name>
+	        <value>${namenode}</value>
+	      </property>
+	      <property>
+	        <name>inputPath</name>
+	        <value>${wfInputPath}</value>
+	      </property>
+	      <property>
+	        <name>outputPath</name>
+	        <value>${wfOutputPath}</value>
+	      </property>
+	   </configuration>
+	 </workflow>
+	</action>
+</coordinator-app>

@@ -1,0 +1,32 @@
+wget http://ita.ee.lbl.gov/traces/NASA_access_log_Jul95.gz
+wget http://ita.ee.lbl.gov/traces/NASA_access_log_Aug95.gz
+
+## uncompress the files
+gunzip NASA_access_log_Jul95.gz
+gunzip NASA_access_log_Aug95.gz
+
+## create a hdfs folder for flume output
+hdfs dfs -mkdir -p /user/cloudera/output/logs/nasa
+
+## prepare folders for the flume client agents
+mkdir -p /home/cloudera/sample-data/nasa_log/july
+mkdir -p /home/cloudera/sample-data/nasa_log/august
+mkdir -p /home/cloudera/sample-data/nasa_log/file-channel/checkpointDir
+mkdir -p /home/cloudera/sample-data/nasa_log/file-channel/dataDir
+
+mv NASA_access_log_Jul95 /home/cloudera/sample-data/nasa_log/july
+mv NASA_access_log_Aug95 /home/cloudera/sample-data/nasa_log/august
+
+# to execute the one-time hive table creation script
+hive -f table_creation.hql
+
+# create folder for oozie
+hdfs dfs -mkdir -p /user/cloudera/oozie/logfile-process/wf/lib
+hdfs dfs -put oozie_logfile_processing/coordinator.xml /user/cloudera/oozie/logfile-process/
+hdfs dfs -put oozie_logfile_processing/job.properties /user/cloudera/oozie/logfile-process/
+hdfs dfs -put oozie_logfile_processing/wf/workflow.xml /user/cloudera/oozie/logfile-process/wf
+hdfs dfs -put oozie_logfile_processing/wf/job.properties /user/cloudera/oozie/logfile-process/wf
+hdfs dfs -put oozie_logfile_processing/wf/lib/logfile-data-processor_2.10-1.0.jar /user/cloudera/oozie/logfile-process/wf/lib
+
+# to set the OOZIE_URL env property for oozie cli execution
+export OOZIE_URL=http://quickstart:11000/oozie/
