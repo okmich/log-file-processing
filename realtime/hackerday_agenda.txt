@@ -6,5 +6,6 @@ Hackerday Agenda
 -	Storing log event as a time series datasets in HBase
 -	Integrating Hive and HBase for data retrieval using query.
 -	Troubleshooting
+-	Architectural extensions (eg. enterprise risk systems)
 
 
