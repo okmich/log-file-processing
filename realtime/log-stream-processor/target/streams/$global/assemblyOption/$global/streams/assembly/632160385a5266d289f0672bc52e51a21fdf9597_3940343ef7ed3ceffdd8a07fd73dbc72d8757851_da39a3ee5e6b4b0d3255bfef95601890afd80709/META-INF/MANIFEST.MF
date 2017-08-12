@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Implementation-Vendor: The Apache Software Foundation
+Implementation-Title: Apache HBase - Protocol
+Implementation-Version: 1.0.3
+Implementation-Vendor-Id: org.apache.hbase
+Built-By: enis
+Build-Jdk: 1.7.0_60
+Specification-Vendor: The Apache Software Foundation
+Specification-Title: Apache HBase - Protocol
+Created-By: Apache Maven 3.1.1
+Specification-Version: 1.0.3
+Archiver-Version: Plexus Archiver
+

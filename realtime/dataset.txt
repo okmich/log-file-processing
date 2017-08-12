@@ -1,0 +1,10 @@
+Nasa log
+=============
+http://ita.ee.lbl.gov/html/contrib/NASA-HTTP.html
+
+
+SEC Log file archive
+=============
+https://www.sec.gov/dera/data/Public-EDGAR-log-file-data/2016/Qtr3/log20160930.zip
+
+log file description - https://www.sec.gov/files/EDGAR_variables_FINAL.pdf

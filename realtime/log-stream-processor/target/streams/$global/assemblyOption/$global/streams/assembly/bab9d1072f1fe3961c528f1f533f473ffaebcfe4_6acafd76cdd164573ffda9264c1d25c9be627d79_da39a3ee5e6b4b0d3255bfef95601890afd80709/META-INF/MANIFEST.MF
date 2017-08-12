@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: hshreedharan
+Build-Jdk: 1.7.0_79
+Specification-Title: Flume NG Configuration
+Specification-Version: 1.6.0
+Specification-Vendor: Apache Software Foundation
+Implementation-Title: Flume NG Configuration
+Implementation-Version: 1.6.0
+Implementation-Vendor-Id: org.apache.flume
+Implementation-Vendor: Apache Software Foundation
+

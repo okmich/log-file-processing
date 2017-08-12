@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Implementation-Title: spark-hbase-connector
+Implementation-Version: 1.0.3
+Specification-Vendor: it.nerdammer.bigdata
+Specification-Title: spark-hbase-connector
+Implementation-Vendor-Id: it.nerdammer.bigdata
+Specification-Version: 1.0.3
+Implementation-Vendor: it.nerdammer.bigdata
+

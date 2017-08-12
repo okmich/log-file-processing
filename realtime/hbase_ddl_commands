@@ -1,4 +1,5 @@
 ## create namespace
-
+create_namespace 'log_stream'
 
 ## create tables with column families
+create 'log_stream:log_event', 'main'
