@@ -1,5 +1,3 @@
- .toColumns("ip","ts","tz","cik","ascno","doc","code","size","idx","noref","noagnt","find","crawler","browser")
-
 create database log_stream;
 
 use log_stream;

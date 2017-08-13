@@ -23,7 +23,7 @@ object LogStreamProcessor  {
 
 	def main(args : Array[String]) : Unit = {
 		if (args.length < 3){
-			println("No arguments!!! Use <zookeeperHost> <streamingHost>, <port> <duration> ")
+			println("No arguments!!! Use <zookeeperHost> <streamingHost>, <port> <durationInMillis> ")
 			return; 
 		}
 
@@ -56,14 +56,14 @@ object LogStreamProcessor  {
 
 				val fileName = {
 					val f = fields(6)
-					if (f == null || f.startsWith(".")) "" else f
+					if (f == null || f.startsWith(".")) fields(5) else f
 				}
 
 				val ts = DATE_FORMATTER.parse(fields(1) + " " + fields(2)).getTime * -1 //get the time series in descending order
 				
-				(ts + s"-${fields(4).toFloat.toInt}", //row key 
+				(s"${fields(5)}|${ts}|${fields(0)}", //row key  - ascno|ts|ip
 					fields(0),  //ip
-					ts,			//ts
+					ts * -1,			//ts
 					fields(3),	//time zone
 					fields(4).toFloat.toInt,	//cik
 					fields(5),	//accession number
