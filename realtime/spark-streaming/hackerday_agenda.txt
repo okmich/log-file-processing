@@ -1,0 +1,13 @@
+Hackerday Agenda
+===========================================
+-	Making a case for real time processing of log files
+-	Getting logs at real time using Flume Log4J appenders
+-	Making a case for Kafka for log aggregation.
+-	Storing log event as a time series datasets in HBase
+-	Integrating Hive and HBase for data retrieval using query.
+-	Troubleshooting
+-	Architectural extensions (eg. enterprise risk systems)
+
+
+
+
