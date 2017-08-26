@@ -1,7 +1,9 @@
 Hackerday Agenda
 ===========================================
-
-
-
-
-
+-	Re-state the case for real-time processing of log files
+-	Run through our application and real-time log collection using Flume Log4J appenders
+-	Flume Kafka Integration (Channels or Sink)
+-	Kafka Log4J appenders
+-	Kafka Stream
+-	Kafka Connect 
+-	Extending our architecture in a microservice world
